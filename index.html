@@ -1,0 +1,435 @@
+<div class="post-body post-content">
+<style> 
+input{
+	width: 130px;
+}
+ 
+table tr td{
+  border:1px solid #CCCCCC;border-width: 1px;padding:5px;
+}
+table input,table form,table textarea,table button {-webkit-appearance: auto;  -moz-appearance: auto; appearance: auto;}
+</style>
+<table class="contentpaneopen" style="width:100%;border-spacing: 0;">
+<tbody>
+<tr>
+<td valign="top">
+<p style="padding: 5px;">The <strong>risk and reward calculator</strong> will help you to calculate the position's best targets and their respective reward-to-risk ratios based on the Fibonacci retracements from the local peak and bottom. It's a powerful tool to determine the potential risks before entering any positions.</p>
+<p style="padding: 5px;">Fibonacci retracements (0.382 and 0.618) are calculated to form the entry, target and stop-loss levels. It's better to enter positions only if the current price (C) is close to 0.382 Fibonacci level.</p>
+<script type="text/javascript">// <![CDATA[
+function CalcRR()
+
+{
+
+	var f = document.getElementById('f');
+	var f2 = document.getElementById('f2');
+	var A = document.getElementById('A');
+	var B = document.getElementById('B');
+	var C = document.getElementById('C');
+	
+
+	if(!f.A.value)
+
+	{
+
+		//alert('Enter the Point A price, please.');
+		document.getElementById("error").innerHTML = "Enter the Point A price, please.";
+		document.getElementById("error").style.display= "block";
+		f.A.style.border= "2px solid red";
+
+		f.B.style.border= "2px inset";
+		f.C.style.border= "2px inset";
+
+		return false;
+
+	}
+
+	else if(!f.B.value)
+
+	{
+
+		//alert('Enter the Point B price, please.');
+		document.getElementById("error").innerHTML = "Enter the Point B price, please.";
+		document.getElementById("error").style.display= "block";
+		f.B.style.border= "2px solid red";
+
+		f.A.style.border= "2px inset";
+		f.C.style.border= "2px inset";
+
+		return false;
+
+	}
+
+	else if(!f.C.value)
+
+	{
+
+		//alert('Enter the Point C price, please.');
+		document.getElementById("error").innerHTML = "Enter the Point C price, please.";
+		document.getElementById("error").style.display= "block";
+		f.C.style.border= "2px solid red";
+
+		f.A.style.border= "2px inset";
+		f.B.style.border= "2px inset";
+
+		return false;
+
+	}
+    
+    document.getElementById("error").style.display= "none";
+    f.A.style.border= "2px inset";
+	f.B.style.border= "2px inset";
+	f.C.style.border= "2px inset";
+
+	if (1*f.A.value <= 1*f.B.value)
+
+	{
+
+		var r1 = 1*f.B.value - (1*f.B.value - 1*f.A.value) * 0.382;
+
+		var r2 = 1*f.B.value - (1*f.B.value - 1*f.A.value) * 0.618;
+
+		var t1 = r1 + (1*f.C.value - 1*f.A.value);
+
+		var t2 = 1*f.B.value + (1*f.C.value - 1*f.A.value);
+
+		var t3 = r1 + (1*f.B.value - 1*f.A.value) + (1*f.C.value - 1*f.A.value);
+
+		var risk1 = r1 - r2;
+
+		var reward1 = t1 - r1;
+
+		var reward2 = t2 - r1;
+
+		var reward3 = t3 - r1;
+
+	}
+
+	else
+
+	{
+
+		var r1 = 1*f.B.value + (1*f.A.value - 1*f.B.value) * 0.382;
+
+		var r2 = 1*f.B.value + (1*f.A.value - 1*f.B.value) * 0.618;
+
+		var t1 = r1 - (1*f.A.value - 1*f.C.value);
+
+		var t2 = 1*f.B.value - (1*f.A.value - 1*f.C.value);
+
+		var t3 = r1 - (1*f.A.value - 1*f.C.value) - (1*f.A.value - 1*f.B.value);
+
+		var risk1 = r2 - r1;
+
+		var reward1 = r1 - t1;
+
+		var reward2 = r1 - t2;
+
+		var reward3 = r1 - t3;
+
+	}
+
+	var ratio1 = reward1 / risk1;
+
+	var ratio2 = reward2 / risk1;
+
+	var ratio3 = reward3 / risk1;
+
+
+
+	f2.r1.value = Math.round(r1*10000)/10000;
+
+	f2.r2.value = Math.round(r2*10000)/10000;
+
+	f2.t1.value = Math.round(t1*10000)/10000;
+
+	f2.t2.value = Math.round(t2*10000)/10000;
+
+	f2.t3.value = Math.round(t3*10000)/10000;
+
+	f2.risk1.value = Math.round(risk1*10000)/10000;
+
+	f2.risk2.value = Math.round(risk1*10000)/10000;
+
+	f2.risk3.value = Math.round(risk1*10000)/10000;
+
+	f2.reward1.value = Math.round(reward1*10000)/10000;
+
+	f2.reward2.value = Math.round(reward2*10000)/10000;
+
+	f2.reward3.value = Math.round(reward3*10000)/10000;
+
+	f2.ratio1.value = Math.round(ratio1*100)/100;
+
+	f2.ratio2.value = Math.round(ratio2*100)/100;
+
+	f2.ratio3.value = Math.round(ratio3*100)/100;
+
+}
+function GetURLParameter(sParam)
+{
+    var sPageURL = window.location.search.substring(1);
+    var sURLVariables = sPageURL.split('&');
+    for (var i = 0; i < sURLVariables.length; i++) 
+    {
+        var sParameterName = sURLVariables[i].split('=');
+        if (sParameterName[0] == sParam) 
+        {
+            return sParameterName[1];
+        }
+    }
+}
+(function() {
+	var refid = GetURLParameter('refid');
+	var reflink = document.getElementById('reflink');
+	if(refid != undefined){
+		reflink.setAttribute('href', 'https://hotforex.com/?refid='+refid+'');
+	}
+
+})();
+// ]]></script>
+<form id="f" style="padding: 5px;">
+<label id="error" style="border:2px solid red; display:none; font-size:12px;"></label>
+<table border="0" style="width: 55%;font-size: 13px;">
+<tbody>
+<tr>
+<td width="45%">Price A: <span style="color: #f00;">*</span></td>
+<td width="55%"><input class="f2" id="A" name="A" type="text"/></td>
+</tr>
+<tr>
+<td>Price B: <span style="color: #f00;">**</span></td>
+<td><input class="f2" id="B" name="B" type="text"/></td>
+</tr>
+<tr>
+<td>Price C: <span style="color: #f00;">***</span></td>
+<td><input class="f2" id="C" name="C" type="text"/></td>
+</tr>
+<tr>
+<td> </td>
+<td><input class="f2" onclick="CalcRR();" type="button" value="Calculate"/></td>
+</tr>
+</tbody>
+</table>
+</form>
+<h4 style="padding: 5px;">Results:</h4>
+<form id="f2" style="padding: 5px;">
+<table border="0" cellpadding="0" cellspacing="2" style="width: 55%;font-size: 13px;">
+<tbody>
+<tr>
+<td width="45%">0.382 Retracement:</td>
+<td width="55%"><input class="f2" id="r1" name="r1" type="text"/></td>
+</tr>
+<tr>
+<td>0.618 Retracement:</td>
+<td><input class="f2" id="r2" name="r2" type="text"/></td>
+</tr>
+</tbody>
+</table>
+			 
+
+			<table border="0" cellpadding="0" cellspacing="2" style="width: 55%;font-size: 13px;">
+<tbody>
+<tr>
+<td width="45%">1st Target:</td>
+<td width="55%"><input class="f2" id="t1" name="t1" type="text"/></td>
+</tr>
+<tr>
+<td>2nd Target:</td>
+<td><input class="f2" id="t2" name="t2" type="text"/></td>
+</tr>
+<tr>
+<td>3rd Target:</td>
+<td><input class="f2" id="t3" name="t3" type="text"/></td>
+</tr>
+</tbody>
+</table>
+			 
+
+			<table border="0" cellpadding="0" cellspacing="2" style="font-size: 13px;">
+<tbody>
+<tr>
+<td width="145"> </td>
+<td align="center">Risk</td>
+<td align="center">Reward</td>
+<td align="center">Ratio</td>
+</tr>
+<tr>
+<td>1st Target:</td>
+<td><input class="f2" id="risk1" name="risk1" type="text"/></td>
+<td><input class="f2" id="reward1" name="reward1" type="text"/></td>
+<td><input class="f2" id="ratio1" name="ratio1" type="text"/></td>
+</tr>
+<tr>
+<td>2nd Target:</td>
+<td><input class="f2" id="risk2" name="risk2" type="text"/></td>
+<td><input class="f2" id="reward2" name="reward2" type="text"/></td>
+<td><input class="f2" id="ratio2" name="ratio2" type="text"/></td>
+</tr>
+<tr>
+<td>3rd Target:</td>
+<td><input class="f2" id="risk3" name="risk3" type="text"/></td>
+<td><input class="f2" id="reward3" name="reward3" type="text"/></td>
+<td><input class="f2" id="ratio3" name="ratio3" type="text"/></td>
+</tr>
+</tbody>
+</table>
+</form>
+<p style="padding: 5px;">It's not recommended to enter a trade if your reward-to-risk ratio is less than 2.</p>
+<p style="padding: 5px;"><span style="color: #f00;">*</span> In a downtrend it is the Peak , in an uptrend it is the Bottom.<br/>
+<span style="color: #f00;">**</span> In a downtrend it is the Bottom, in an Uptrend it is the Peak.<br/>
+<span style="color: #f00;">***</span> The current price of the underlying instrument.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<script>
+//<![CDATA[
+document.addEventListener('DOMContentLoaded', function () {
+    // --- PART 1: Remove links to nonexistent anchors ---
+    const linkshDiv = document.querySelector('.linksh');
+    if (linkshDiv) {
+        const links = linkshDiv.querySelectorAll('a');
+        links.forEach(link => {
+            const href = link.getAttribute('href');
+            if (href && href.startsWith('#')) {
+                const targetId = href.substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (!targetElement) {
+                    link.style.display = 'none';
+                }
+            }
+        });
+    }
+
+    // --- PART 2: Lazy-load YouTube iframe ---
+    const container = document.querySelector('.youtube-lazy');
+    if (!container) return;
+
+    const videoId = container.getAttribute('data-video-id');
+    const si = container.getAttribute('data-si');
+
+    function createIframe(src = null) {
+        if (container.querySelector("iframe")) return;
+
+        const iframe = document.createElement("iframe");
+        iframe.setAttribute("width", "560");
+        iframe.setAttribute("height", "315");
+        iframe.setAttribute("frameborder", "0");
+        iframe.setAttribute("allowfullscreen", "");
+        iframe.setAttribute("loading", "lazy");
+        iframe.setAttribute("title", "YouTube video player");
+        iframe.setAttribute("referrerpolicy", "strict-origin-when-cross-origin");
+        iframe.setAttribute("allow", "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share");
+        iframe.setAttribute("name", "youtubeframe");
+        iframe.src = src || `https://www.youtube.com/embed/${videoId}?autoplay=1&si=${encodeURIComponent(si)}`;
+
+        container.innerHTML = "";
+        container.appendChild(iframe);
+    }
+
+    function scrollToIframeCenter() {
+        container.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    // On thumbnail click
+    container.addEventListener("click", () => {
+        createIframe();
+        scrollToIframeCenter();
+    });
+
+    // On ▶️ link click
+    document.querySelectorAll('a[target="youtubeframe"]').forEach(link => {
+        link.addEventListener("click", (e) => {
+            const iframeExists = container.querySelector("iframe");
+            if (!iframeExists) {
+                e.preventDefault();
+                createIframe(link.href);
+                setTimeout(() => {
+                    window.open(link.href, "youtubeframe");
+                    scrollToIframeCenter();
+                }, 200);
+            } else {
+                scrollToIframeCenter();
+            }
+        });
+    });
+});
+//]]>
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Risk and Reward Forex Calculator",
+  "url": "https://www.robotfx.org/p/risk-and-reward-forex-calculator.html",
+  "description": "The risk and reward calculator  will help you to calculate the position&#39;s best targets and their respective reward-to-risk ratios based on the Fibonacci retracements from the l&#8230;",
+  "operatingSystem": "MetaTrader 4, MetaTrader 5 (Windows, macOS, Linux with Wine/VM)",
+  "applicationCategory": "https://schema.org/FinanceApplication",
+  "applicationSuite": "MetaTrader",
+  
+    "screenshot": {
+      "@type": "ImageObject",
+      "url": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjp75CL5feBC7QYmLKNcIU4PU6_T5zv3w_qW7dPZ01x67l8enIpkXgNGhjTQ_91zTj9MaAaG2abP8_ccEUvxFlb8LAZ5b2s17mH9OO-y4qhShO7h2PfItjxXYU_eSQtI3M7G0qc2c22Sx_HWH9vvaqInwqmS-1IzeVauznK00gH2_oG85PsLRreoazmsXuh/s16000-e90/robotfx_forex_trading_tools.jpg"
+    },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "RobotFX Team",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://blogger.googleusercontent.com/img/a/AVvXsEjqDhYXLdZI2Hzi6vkQ2pnPz20A0rNyP3HTYoia8-RUD3170pCSfv77ACpX05KJt2iIgwDcm6N79AqUxzKoAFgIupT-XgEC9rzlwDH4hBMKDACgfLPjg2UaySbCEQUW9mZnMlHq_n0q4WC8juOoEAtodFyQcP_M0J9fxW3c3UUy6z7L9oYzcOgG-anlGA=s128-e365-rw"
+    }
+  },
+  "datePublished": "2023-03-01T10:03:00-08:00",
+  "dateModified": "2023-03-01T10:03:00-08:00",
+  "offers": {
+    "@type": "Offer",
+    "availability": "https://schema.org/InStock",
+    "price": "0",
+    "priceCurrency": "USD",
+    "url": "https://www.robotfx.org/p/risk-and-reward-forex-calculator.html"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "5",
+    "reviewCount": "1"
+  },
+  "review": [
+    
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to use Risk and Reward Forex Calculator",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "name": "Functions",
+      "text": "Explore the core functions of the Risk and Reward Forex Calculator."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Charts",
+      "text": "Check the charts to see Risk and Reward Forex Calculator examples and understand how it works."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Settings",
+      "text": "Adjust the Risk and Reward Forex Calculator settings according to the instructions and your preferences."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Videos",
+      "text": "Watch tutorial videos for a better understanding of how Risk and Reward Forex Calculator works."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Download",
+      "text": "Download the Risk and Reward Forex Calculator and copy it in the MetaTrader folder."
+    }
+  ]
+}
+</script>
+</div>
